@@ -26,10 +26,10 @@ Once the project moves into development, the press release can be used as a touc
   > There are all sorts of metrics that can be looked at when doing fundamental analysis but no all companies are the same and you must choose the right metrics for the right company. You wouldn't use the same metrics for evaluating Walmart (a major retailer) that you would for evaluating a small tech company on the brink of profitability. The aim of this app is to provide you with just enough *relevant* metrics to be able to quickly make an informed decision on a company.
 
 ## Problem ##
-  > The stock market is attracting a younger and younger crowd now a days. This isn't inherintly a problem in itself but it created the problem of an over reliance on technical analysis. Young traders almost exclusively trade on technicals because thats what they see on instagram. Its a lot easier for instagram traders to post a screenshot of some crazy looking chart with lines all over the place and telling people to buy this stock now than to post an analysis of the companies financial. Financials are ignored with the new younger crowd.
+  > The stock market is attracting a younger and younger crowd now a days. This isn't inherintly a problem in itself but it created the problem of an over reliance on technical analysis. Young traders almost exclusively trade on technicals because thats what they see on instagram. Its a lot easier for instagram traders to post a screenshot of some crazy looking chart with lines all over the place and telling people to buy this stock now than to post an analysis of the company's financials. Financials are ignored with the new younger crowd.
 
 ## Solution ##
-  > This app takes the difficulty out of fundamental research. The young traders like trading on technicals because its easy. They can set up their chart with 3-5 indicators and then all they have to do is tell the chart what stock ticker to look at. This app takes the ease of technical research and applies it to fundamental research.
+  > This app takes the difficulty out of fundamental research. The young traders like trading on technicals because charts are easy to find and easy to setup. They can set up their chart with 3-5 indicators and then all they have to do is tell the chart what stock ticker to look at. This app takes the ease of technical research and applies it to fundamental research.
 
 ## Quote from You ##
   > "Fast and effective fundamentals. Get up to date with your entire watch list's fundamentals before you're even done with your first cup of coffee."
