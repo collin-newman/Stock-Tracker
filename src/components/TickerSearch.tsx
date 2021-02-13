@@ -14,21 +14,24 @@ const TickerSearch = () => {
   };
 
   useEffect(() => {
-    const options: AxiosRequestConfig = {
-      method: 'GET',
-      url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials',
-      params: {symbol: fetch, region: 'US'},
-      headers: {
-        'x-rapidapi-key': 'c4182ea640msh91c3897924ad99ap13e4f9jsn42bf788eaff9',
-        'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com'
-      }
-    };
+    if (fetch) {
+      const options: AxiosRequestConfig = {
+        method: 'GET',
+        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials',
+        params: {symbol: fetch, region: 'US'},
+        headers: {
+          'x-rapidapi-key': 'c4182ea640msh91c3897924ad99ap13e4f9jsn42bf788eaff9',
+          'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com'
+        }
+      };
 
-    axios.request(options).then(function (response) {
-      console.log(response.data);
-    }).catch(function (error) {
-      console.error(error);
-    });
+      axios.request(options)
+        .then(function (response) {
+          console.log(response.data);
+        }).catch(function (error) {
+          console.error(error);
+        });
+    }
   }, [fetch]);
 
   return (

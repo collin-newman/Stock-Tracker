@@ -35,10 +35,7 @@ Once the project moves into development, the press release can be used as a touc
   > "Fast and effective fundamentals. Get up to date with your entire watch list's fundamentals before you're even done with your first cup of coffee."
 
 ## How to Get Started ##
-  >
+  > Login(stretch goal) and search for a stock ticker.
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
-
-## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > "I really like the having all the important metrics in one easy to read place."
