@@ -1,10 +1,13 @@
-import * as React from 'react';
+import React from 'react';
+import Breakdown from './Breakdown';
+import TickerSearch from './TickerSearch';
 
 const App = () => {
   return (
     <>
-      <div>Hello from react and typescript</div>
-      <h1>Testing hot reload</h1>
+      <h1>Stock Funamentals</h1>
+      <TickerSearch />
+      <Breakdown />
     </>
   );
 }
