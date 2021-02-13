@@ -14,6 +14,7 @@ const TickerSearch = () => {
   };
 
   useEffect(() => {
+    // wrap api call in if block to prevent using up a request on initial load
     if (fetch) {
       const options: AxiosRequestConfig = {
         method: 'GET',
