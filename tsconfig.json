@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "composite": true,
+    "target": "ES2018",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "./dist",
     "rootDir": ".",
-    "outDir": "./dist/",
+    "strict": true,
+    "esModuleInterop": false
   },
-  "exclude": [
-    "node_modules",
+  "include": [
+    "**/*"
   ],
-  "references": [
-    { "path": "./src" },
-    { "path": "./server" },
-    { "path": "./database" }
+  "exclude": [
+    "**/node_modules",
+    "**/src"
   ]
 }

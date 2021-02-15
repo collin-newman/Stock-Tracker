@@ -2,15 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 
 const TickerSearch = () => {
-  const [ticker, setTicker] = useState({name: ''});
-  const [fetch, setFetch] = useState(null);
-  const form = useRef(null);
+  const [ticker, setTicker] = useState('');
+  const [fetch, setFetch] = useState('');
 
   const submit  = (e: React.FormEvent<EventTarget>): void => {
     e.preventDefault();
-    const data = new FormData(form.current).get('ticker[name]');
-    setFetch(data);
-    console.log(data);
+    setFetch(ticker);
   };
 
   useEffect(() => {
@@ -24,8 +21,8 @@ const TickerSearch = () => {
 
   return (
     <section>
-      <form ref={form} onSubmit={submit}>
-        <input type='text' name="ticker[name]" onChange={(e) => setTicker({name: e.target.value})} defaultValue={ticker.name}></input>
+      <form onSubmit={submit}>
+        <input type='text' onChange={(e) => setTicker(e.target.value)} defaultValue=''></input>
         <input type='submit' name="=>"/>
       </form>
     </section>
