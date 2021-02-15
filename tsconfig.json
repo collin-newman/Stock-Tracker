@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
     "noImplicitAny": true,
-    "module": "es6",
-    "target": "es5",
-    "jsx": "react",
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node"
+    "strictNullChecks": true,
+    "composite": true,
+    "rootDir": ".",
+    "outDir": "./dist/",
   },
-  "include": [
-    "src"
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+  ],
+  "references": [
+    { "path": "./src" },
+    { "path": "./server" },
+    { "path": "./database" }
   ]
 }

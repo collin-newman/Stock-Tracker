@@ -16,22 +16,9 @@ const TickerSearch = () => {
   useEffect(() => {
     // wrap api call in if block to prevent using up a request on initial load
     if (fetch) {
-      const options: AxiosRequestConfig = {
-        method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials',
-        params: {symbol: fetch, region: 'US'},
-        headers: {
-          'x-rapidapi-key': 'c4182ea640msh91c3897924ad99ap13e4f9jsn42bf788eaff9',
-          'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com'
-        }
-      };
-
-      axios.request(options)
-        .then(function (response) {
-          console.log(response.data);
-        }).catch(function (error) {
-          console.error(error);
-        });
+      axios.post(`${process.env.HOST || 'http://localhost'}:${process.env.PORT || 3000}/api/stock`, { ticker: fetch })
+      .then(response => console.log(response))
+      .catch(err => console.log(err));
     }
   }, [fetch]);
 

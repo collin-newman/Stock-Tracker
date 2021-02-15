@@ -3,13 +3,16 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: './src/index.tsx',
-  plugins: [new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html')})],
+  plugins: [
+    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html')}),
+  ],
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+        include: /src/,
       },
       {
         test: /\.css$/i,
