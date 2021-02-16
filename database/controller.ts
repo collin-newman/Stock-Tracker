@@ -29,7 +29,10 @@ const Stock = mongoose.model<Stock>('Stock', stockSchema);
 
 export const findAll = (req: express.Request, res: express.Response) => {
   Stock.find()
-    .then(data => res.send(data))
+    .then(data => {
+      console.log(data);
+      res.send(data)
+    })
     .catch(err => res.send(err));
 };
 
