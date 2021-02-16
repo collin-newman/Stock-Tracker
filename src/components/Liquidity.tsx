@@ -31,7 +31,7 @@ const Liquidity = ({ stocks }: iStocks) => {
           {stocks.map((stock: iStock) => (
             <tr>
               <td>{stock.ticker}</td>
-              <td>{stock.assets / stock.liabilities}</td>
+              <td>{Math.round((stock.assets / stock.liabilities) * 100) / 100}</td>
             </tr>
           ))}
         </tbody>

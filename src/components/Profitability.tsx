@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table'
 
-interface stock {
+interface iStock {
   _id: string;
   ticker: string;
   assets: number;
@@ -13,7 +13,7 @@ interface stock {
 }
 
 interface iStocks {
-  stocks: stock[];
+  stocks: iStock[];
 }
 
 const Profitability = ({ stocks }: iStocks) => {
@@ -27,12 +27,12 @@ const Profitability = ({ stocks }: iStocks) => {
           </tr>
         </thead>
         <tbody>
-          {stocks.map((stock: stock) => {
+          {stocks.map((stock: iStock) => (
             <tr>
               <td>{stock.ticker}</td>
-              <td>{stock.debt / stock.equity}</td>
+              <td>{Math.round(((stock.revenue - stock.costOfRevenue) / stock.revenue) * 100) / 100}</td>
             </tr>
-          })}
+          ))}
         </tbody>
       </Table>
     </>
