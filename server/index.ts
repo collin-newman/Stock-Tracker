@@ -9,11 +9,13 @@ app.use(parser.urlencoded());
 app.use(parser.json());
 app.use(express.static('dist'));
 
-app.get('/api/stock', (req: express.Request, res:express.Response) => {
+app.get('/api/stock', (req: express.Request, res: express.Response) => {
+  console.log('GET');
   Stock.findAll(req, res);
 });
 
-app.post('/api/stock', (req: express.Request, res:express.Response) => {
+app.post('/api/stock', (req: express.Request, res: express.Response) => {
+  console.log('Post');
   Stock.create(req, res);
 });
 

@@ -5,7 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "test": "test",
-    "start": "node ./dist/server/index.js",
+    "start": "nodemon ./dist/server/index.js",
     "react:dev": "webpack serve --config webpack.config.js --mode development --open Chrome",
     "build:front": "webpack --config webpack.config.js --mode production -w",
     "build:backend": "tsc --build tsconfig.json -w"
@@ -26,7 +26,9 @@
   },
   "homepage": "https://github.com/collin-newman/ghrbld14-mvp#readme",
   "dependencies": {
+    "@types/cors": "^2.8.10",
     "axios": "^0.21.1",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.16"
