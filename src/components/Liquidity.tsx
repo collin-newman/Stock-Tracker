@@ -13,11 +13,6 @@ const Liquidity = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>AMD</td>
-            <td>0.68</td>
-            <td>0.74</td>
-          </tr>
         </tbody>
       </Table>
     </>
