@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 const TickerSearch = ({ getData }: any) => {
   const [ticker, setTicker] = useState('');
@@ -23,7 +24,7 @@ const TickerSearch = ({ getData }: any) => {
     <section>
       <form onSubmit={submit}>
         <input type='text' onChange={(e) => setTicker(e.target.value)} defaultValue=''></input>
-        <input type='submit' name="=>"/>
+        <Button type="submit">submit</Button>
       </form>
     </section>
   );

@@ -13,6 +13,7 @@ export interface Stock extends mongoose.Document {
   debt: number;
   revenue: number;
   costOfRevenue: number;
+  cashFlow: number;
 };
 
 export const stockSchema = new mongoose.Schema({
@@ -22,7 +23,8 @@ export const stockSchema = new mongoose.Schema({
   equity: { type: Number, required: true },
   debt: { type: Number, required: true },
   revenue: { type: Number, required: true },
-  costOfRevenue: { type: Number, required: true }
+  costOfRevenue: { type: Number, required: true },
+  cashFlow: { type: Number, required: true },
 });
 
 const Stock = mongoose.model<Stock>('Stock', stockSchema);
@@ -53,6 +55,7 @@ export const create = (req: express.Request, res:express.Response) => {
       const {
         balanceSheetHistoryQuarterly: { balanceSheetStatements },
         incomeStatementHistoryQuarterly: { incomeStatementHistory },
+        cashflowStatementHistory: { cashflowStatements },
       } = response.data;
 
       // some stock tickers seem to be missing a metric here and there for a
@@ -62,7 +65,7 @@ export const create = (req: express.Request, res:express.Response) => {
         interface counter {
           value: number;
           count: number;
-        }
+        };
         interface balanceMetrics {
           totalAssets: counter;
           totalLiab: counter;
@@ -74,7 +77,13 @@ export const create = (req: express.Request, res:express.Response) => {
           totalRevenue: counter;
           costOfRevenue: counter;
           [key: string]: counter;
-        }
+        };
+
+        interface cashFlowMetrics {
+          totalCashFromOperatingActivities: counter;
+          [key: string]: counter;
+        };
+
         const balanceSheetMetrics: balanceMetrics = {
           totalAssets: { value: 0, count: 0 },
           totalLiab: { value: 0, count: 0 },
@@ -85,27 +94,39 @@ export const create = (req: express.Request, res:express.Response) => {
         const incomeStatementMetrics: incomeMetrics = {
           totalRevenue: { value: 0, count: 0 },
           costOfRevenue: { value: 0, count: 0 },
-        }
+        };
+
+        const cashFlowMetrics: cashFlowMetrics = {
+          totalCashFromOperatingActivities: { value: 0, count: 0 },
+        };
 
         for (let i = 0; i < 4; i++) {
           for (let key in balanceSheetMetrics) {
-            console.log(balanceSheetStatements[i][key]);
+            console.log('balance', balanceSheetStatements[i][key]);
             if (balanceSheetStatements[i][key] !== undefined) {
               balanceSheetMetrics[key].value += balanceSheetStatements[i][key].raw;
               balanceSheetMetrics[key].count++;
             }
           }
           for (let key in incomeStatementMetrics) {
-            console.log(incomeStatementHistory[i][key]);
+            console.log('income', incomeStatementHistory[i][key]);
             if (incomeStatementHistory[i][key] !== undefined) {
               incomeStatementMetrics[key].value += incomeStatementHistory[i][key].raw
               incomeStatementMetrics[key].count++;
+            }
+          }
+          for (let key in cashFlowMetrics) {
+            console.log('cashflow', cashflowStatements[i]);
+            if (cashflowStatements[i][key]) {
+              cashFlowMetrics[key].value += cashflowStatements[i][key].raw;
+              cashFlowMetrics[key].count++;
             }
           }
         }
 
         const { totalAssets, totalLiab, totalStockholderEquity, longTermDebt } = balanceSheetMetrics;
         const { totalRevenue, costOfRevenue } = incomeStatementMetrics;
+        const { totalCashFromOperatingActivities, } = cashFlowMetrics;
 
         const avgAssets: number = totalAssets.value / totalAssets.count;
         const avgLiabilities: number = totalLiab.value / totalLiab.count;
@@ -113,6 +134,7 @@ export const create = (req: express.Request, res:express.Response) => {
         const avgDebt: number = longTermDebt.value / longTermDebt.count;
         const avgRevenue: number = totalRevenue.value / totalRevenue.count;
         const avgCostOfRevenue: number = costOfRevenue.value / costOfRevenue.count;
+        const avgCashFlow: number = totalCashFromOperatingActivities.value / totalCashFromOperatingActivities.count;
 
         return {
           avgAssets,
@@ -121,10 +143,11 @@ export const create = (req: express.Request, res:express.Response) => {
           avgDebt,
           avgRevenue,
           avgCostOfRevenue,
+          avgCashFlow,
         };
       }
 
-      const { avgAssets, avgLiabilities, avgEquity, avgDebt, avgRevenue, avgCostOfRevenue } = getMetrics();
+      const { avgAssets, avgLiabilities, avgEquity, avgDebt, avgRevenue, avgCostOfRevenue, avgCashFlow } = getMetrics();
       const stock: object = {
         ticker,
         assets: avgAssets,
@@ -132,7 +155,8 @@ export const create = (req: express.Request, res:express.Response) => {
         equity: avgEquity,
         debt: avgDebt,
         revenue: avgRevenue,
-        costOfRevenue: avgCostOfRevenue
+        costOfRevenue: avgCostOfRevenue,
+        cashFlow: avgCashFlow,
       };
       Stock.create(stock)
         .then(data => {

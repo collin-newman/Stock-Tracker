@@ -12,6 +12,7 @@ interface stock {
   debt: number;
   revenue: number;
   costOfRevenue: number;
+  cashFlow: number;
 }
 
 interface iStocks {
