@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 const TickerSearch = ({ getData }: any) => {
   const [ticker, setTicker] = useState('');
@@ -21,10 +23,20 @@ const TickerSearch = ({ getData }: any) => {
   }, [fetch]);
 
   return (
-    <section>
-      <form onSubmit={submit}>
-        <input type='text' onChange={(e) => setTicker(e.target.value)} defaultValue=''></input>
-        <Button type="submit">submit</Button>
+    <section className='mainItem'>
+      <form onSubmit={submit} className='form'>
+        <InputGroup className="mb-3" size='lg'>
+          <FormControl
+            placeholder="Add a stock"
+            aria-label="Add a stock"
+            aria-describedby="basic-addon2"
+            onChange={(e) => setTicker(e.target.value)}
+            defaultValue=''
+          />
+          <InputGroup.Append>
+            <Button variant="outline-secondary">add</Button>
+          </InputGroup.Append>
+        </InputGroup>
       </form>
     </section>
   );

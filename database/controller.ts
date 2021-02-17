@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import * as db from './index';
+import db from './index';
 import * as express from 'express';
 import axios from 'axios';
 
@@ -175,7 +175,14 @@ export const create = (req: express.Request, res:express.Response) => {
 
 export const deleteStock = (req: express.Request, res: express.Response) => {
   const stockId = req.params.id;
+  console.log(stockId);
   Stock.findOneAndDelete({ _id: stockId })
     .then(data => res.send(data))
     .catch(err => res.send(err));
 };
+
+export const deleteAll = (req: express.Request, res: express.Response) => {
+  Stock.deleteMany({})
+    .then(response => res.send(response))
+    .catch(error => res.send(error));
+}

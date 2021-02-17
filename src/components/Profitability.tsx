@@ -17,6 +17,7 @@ interface iStock {
 
 interface iStocks {
   stocks: iStock[];
+  deleteStock: any;
 }
 
 const renderEquation = (props: any) => (
@@ -26,10 +27,10 @@ const renderEquation = (props: any) => (
 );
 
 
-const Profitability = ({ stocks }: iStocks) => {
+const Profitability = ({ stocks, deleteStock }: iStocks) => {
   return (
     <>
-      <Table striped bordered hover variant="dark">
+      <Table striped bordered hover variant="dark" className='centerText'>
         <thead>
           <th colSpan={3}>Profitability</th>
           <tr>

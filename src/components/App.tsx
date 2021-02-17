@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Breakdown from './Breakdown';
 import TickerSearch from './TickerSearch';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container';
 
 const App = () => {
   const [stocks, setStocks] = useState([]);
@@ -13,6 +14,11 @@ const App = () => {
       })
       .catch(err => console.log(err));
   }
+  const deleteStock = (id: string) => {
+    axios.delete(`http://localhost:3000/api/stock/${id}`)
+      .then(() => getData())
+      .catch(error => console.log(error));
+  }
   useEffect(() => {
     getData();
   }, []);
@@ -21,11 +27,10 @@ const App = () => {
   }, stocks);
 
   return (
-    <>
-      <h1>Stock Funamentals</h1>
+    <Container>
       <TickerSearch getData={getData}/>
-      <Breakdown stocks={ stocks }/>
-    </>
+      <Breakdown stocks={stocks} deleteStock={deleteStock}/>
+    </Container>
   );
 }
 

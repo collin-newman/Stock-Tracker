@@ -17,6 +17,7 @@ interface iStock {
 
 interface iStocks {
   stocks: iStock[];
+  deleteStock: any;
 }
 
 const renderTableDescription = (props: any) => (
@@ -34,10 +35,10 @@ const renderEquation = (props: any) => (
 );
 
 
-const FinancialLeverage = ({ stocks }: iStocks) => {
+const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
   return (
     <>
-      <Table striped bordered hover variant="dark">
+      <Table striped bordered hover variant="dark" className='centerText'>
         <thead>
           <OverlayTrigger
             placement="auto"

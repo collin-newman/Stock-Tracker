@@ -1,7 +1,8 @@
 import React from 'react';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
-import Table from 'react-bootstrap/Table'
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 interface iStock {
   _id: string;
@@ -17,6 +18,7 @@ interface iStock {
 
 interface iStocks {
   stocks: iStock[];
+  deleteStock: any;
 }
 
 const tableDescription = (props: any) => (
@@ -37,10 +39,15 @@ const renderCashFlow = (props: any) => (
   </Tooltip>
 );
 
-const Liquidity = ({ stocks }: iStocks) => {
+const Liquidity = ({ stocks, deleteStock }: iStocks) => {
+  const handleClick = (e: any) => {
+    const id = (e.target as Element).getAttribute('data-id');
+    deleteStock(id);
+  }
+
   return (
     <>
-      <Table striped bordered hover variant="dark">
+      <Table striped bordered hover variant="dark" className='centerText'>
         <thead>
           <tr>
             <OverlayTrigger
@@ -72,7 +79,16 @@ const Liquidity = ({ stocks }: iStocks) => {
         <tbody>
           {stocks.map((stock: iStock) => (
             <tr>
-              <td>{stock.ticker}</td>
+              <td>
+                <Button
+                  onClick={handleClick}
+                  className='myButton'
+                  variant='outline-light'
+                  data-id={stock._id}
+                >
+                  <span>{stock.ticker}</span>
+                </Button>
+              </td>
               <td>{Math.round((stock.assets / stock.liabilities) * 100) / 100}</td>
               <td>{Math.round((stock.cashFlow / stock.liabilities) * 100) / 100}</td>
             </tr>

@@ -19,6 +19,12 @@ app.post('/api/stock', (req: express.Request, res: express.Response) => {
   Stock.create(req, res);
 });
 
+app.delete('/api/stock/:id', (req, res) => {
+  console.log('Delete');
+  console.log(req.params.id);
+  Stock.deleteStock(req, res);
+});
+
 app.listen(port, () => {
   console.log('Listening on port ', port);
 });
