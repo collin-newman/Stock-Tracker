@@ -1,7 +1,8 @@
 import React from 'react';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
-import Table from 'react-bootstrap/Table'
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 interface iStock {
   _id: string;
@@ -28,6 +29,11 @@ const renderEquation = (props: any) => (
 
 
 const Profitability = ({ stocks, deleteStock }: iStocks) => {
+  const handleClick = (e: any) => {
+    const id = (e.target as Element).getAttribute('data-id');
+    deleteStock(id);
+  };
+
   return (
     <>
       <Table striped bordered hover variant="dark" className='centerText'>
@@ -47,7 +53,14 @@ const Profitability = ({ stocks, deleteStock }: iStocks) => {
         <tbody>
           {stocks.map((stock: iStock) => (
             <tr>
-              <td>{stock.ticker}</td>
+              <Button
+                onClick={handleClick}
+                className='myButton'
+                variant='outline-light'
+                data-id={stock._id}
+              >
+                <span>{stock.ticker}</span>
+              </Button>
               <td>{Math.round(((stock.revenue - stock.costOfRevenue) / stock.revenue) * 100) / 100}</td>
             </tr>
           ))}

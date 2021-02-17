@@ -149,7 +149,7 @@ export const create = (req: express.Request, res:express.Response) => {
 
       const { avgAssets, avgLiabilities, avgEquity, avgDebt, avgRevenue, avgCostOfRevenue, avgCashFlow } = getMetrics();
       const stock: object = {
-        ticker,
+        ticker: ticker.toUpperCase(),
         assets: avgAssets,
         liabilities: avgLiabilities,
         equity: avgEquity,
