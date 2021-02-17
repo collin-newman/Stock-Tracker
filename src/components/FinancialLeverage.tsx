@@ -22,7 +22,7 @@ interface iStocks {
 }
 
 const renderTableDescription = (props: any) => (
-  <Tooltip id="button-tooltip" {...props}>
+  <Tooltip {...props}>
     Financial leverage ratios measure the long term solvency of a company.
     If these ratios are too high it may mean the company will go under due to high
     debt before it has the chance to turn a profit.
@@ -30,7 +30,7 @@ const renderTableDescription = (props: any) => (
 );
 
 const renderEquation = (props: any) => (
-  <Tooltip id="button-tooltip" {...props}>
+  <Tooltip {...props}>
     (Debt / Equity)
   </Tooltip>
 );

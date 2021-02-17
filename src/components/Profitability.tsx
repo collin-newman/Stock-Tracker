@@ -21,8 +21,16 @@ interface iStocks {
   deleteStock: any;
 }
 
+const renderTableDescription = (props: any) => (
+  <Tooltip {...props}>
+    A high gross profit margin is a signal that once the company scales,
+    it could become very profitable. A low gross profit margin is a signal
+    the company is unable to become profitable.
+  </Tooltip>
+);
+
 const renderEquation = (props: any) => (
-  <Tooltip id="button-tooltip" {...props}>
+  <Tooltip {...props}>
     (sale - cost of sales) / sales
   </Tooltip>
 );
@@ -38,7 +46,13 @@ const Profitability = ({ stocks, deleteStock }: iStocks) => {
     <>
       <Table striped bordered hover variant="dark" className='centerText'>
         <thead>
-          <th colSpan={3}>Profitability</th>
+          <OverlayTrigger
+            placement='auto'
+            delay={{ show: 250, hide: 400 }}
+            overlay={renderTableDescription}
+          >
+            <th colSpan={3}>Profitability</th>
+          </OverlayTrigger>
           <tr>
             <th>Stock</th>
             <OverlayTrigger

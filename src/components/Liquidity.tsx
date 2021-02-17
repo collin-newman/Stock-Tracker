@@ -22,19 +22,19 @@ interface iStocks {
 }
 
 const tableDescription = (props: any) => (
-  <Tooltip id="button-tooltip" {...props}>
+  <Tooltip {...props}>
     <p>Tech companies often don't make a profit or any revenue until they are very mature, they often put more focus on short term goals with the hope that once their product is fully developed they will be able to make up for years of losses. This means the ability to pay for short term obligations is crutial to a tech companies success. Liquidity ratios are what describe the companies ability to pay for these short term obligations.</p>
   </Tooltip>
 );
 
 const renderCurrentRatio = (props: any) => (
-  <Tooltip id="button-tooltip" {...props}>
+  <Tooltip {...props}>
     (Current Assets / Current Liabilities)
   </Tooltip>
 );
 
 const renderCashFlow = (props: any) => (
-  <Tooltip id="button-tooltip" {...props}>
+  <Tooltip {...props}>
     (Operating Cash Flow / Current Liabilities)
   </Tooltip>
 );
