@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Breakdown from './Breakdown';
 import TickerSearch from './TickerSearch';
+import EquationInputs from './EquationInput';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 
@@ -29,7 +30,8 @@ const App = () => {
   return (
     <Container>
       <TickerSearch getData={getData}/>
-      <Breakdown stocks={stocks} deleteStock={deleteStock}/>
+      <Breakdown stocks={stocks} deleteStock={deleteStock} />
+      <EquationInputs stocks={stocks} deleteStock={deleteStock} />
     </Container>
   );
 }

@@ -28,7 +28,7 @@ const Breakdown = ({ stocks, deleteStock }: iBreakdown) => {
       <Card style={{ width: '100%' }}>
         <ListGroup variant="flush">
           <ListGroup.Item>
-            <h2>Fundamentals</h2>
+            <h2>Fundamentals at a glance</h2>
           </ListGroup.Item>
           <ListGroup.Item>
             <Liquidity stocks={stocks} deleteStock={deleteStock}/>

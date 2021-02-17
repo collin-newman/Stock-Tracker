@@ -43,7 +43,7 @@ const Liquidity = ({ stocks, deleteStock }: iStocks) => {
   const handleClick = (e: any) => {
     const id = (e.target as Element).getAttribute('data-id');
     deleteStock(id);
-  }
+  };
 
   return (
     <>
