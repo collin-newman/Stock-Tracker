@@ -5,7 +5,7 @@ import axios from 'axios';
 
 db;
 
-export interface Stock extends mongoose.Document {
+interface Stock extends mongoose.Document {
   ticker: string;
   assets: number;
   liabilities: number;
@@ -16,7 +16,7 @@ export interface Stock extends mongoose.Document {
   cashFlow: number;
 };
 
-export const stockSchema = new mongoose.Schema({
+const stockSchema = new mongoose.Schema({
   ticker: { type: String, required: true },
   assets: { type: Number, required: true },
   liabilities: { type: Number, required: true },

@@ -26,13 +26,18 @@
   },
   "homepage": "https://github.com/collin-newman/ghrbld14-mvp#readme",
   "dependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/passport": "^1.0.6",
+    "@types/passport-local": "^1.0.33",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.16",
     "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
