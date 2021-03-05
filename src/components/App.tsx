@@ -17,15 +17,21 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path='/'>
+        <Route path='/landingPage'>
           <ul className='landingPage'>
-            <li id='login' onClick={() => { setOpenLogin(!openLogin); }} className='route'>Login</li>
+            <li id='login' onClick={() => {
+              setOpenLogin(!openLogin);
+              setOpenSignup(false);
+            }} className='route'>Login</li>
             <Collapse in={openLogin}>
               <div>
                 <Login />
               </div>
             </Collapse>
-            <li id='signup' onClick={() => { setOpenSignup(!openSignup); }} className='route'>Sign up</li>
+            <li id='signup' onClick={() => {
+              setOpenSignup(!openSignup);
+              setOpenLogin(false);
+            }} className='route'>Sign up</li>
             <Collapse in={openSignup}>
               <div>
                 <Signup />
@@ -33,7 +39,7 @@ const App = () => {
             </Collapse>
           </ul>
         </Route>
-        <Route path='/home'>
+        <Route exact path='/'>
           <Home />
         </Route>
       </Switch>

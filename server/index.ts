@@ -12,12 +12,12 @@ app.use(parser.json());
 app.use(express.static('dist'));
 app.use(passport.initialize());
 
-app.post('/signup', (req: express.Request, res: express.Response) => {
+app.post('/api/signup', (req: express.Request, res: express.Response) => {
   const { username, password } = req.body;
   User.create({ username, password }, req, res);
 });
 
-app.post('/login', (req: express.Request, res: express.Response) => {
+app.post('/api/login', (req: express.Request, res: express.Response) => {
   const { username, password } = req.body;
   User.login({ username, password }, req, res);
 });

@@ -30,7 +30,7 @@ export const create = (user: IUser, req: express.Request, res: express.Response)
         .then(() => res.send('Successful signup'))
         .catch(err => {
           console.log(err);
-          res.send('Sorry that username is already taken');
+          res.status(401).send('Sorry that username is already taken');
         });
     })
     .catch(err => res.sendStatus(500));
