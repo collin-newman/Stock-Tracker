@@ -31,3 +31,21 @@ body {
 
 .myButton:hover span {display:none}
 .myButton:hover:before {content:"Delete"}
+
+.route {
+  list-style: none;
+  text-decoration: none;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 5rem;
+  padding: 2rem;
+  margin: 2rem;
+  width: 50vw;
+}
+
+.landingPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

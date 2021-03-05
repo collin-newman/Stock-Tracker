@@ -1,38 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import Breakdown from './Breakdown';
-import TickerSearch from './TickerSearch';
-import EquationInputs from './EquationInput';
-import axios from 'axios';
-import Container from 'react-bootstrap/Container';
+import React, { useState } from 'react';
+import Login from './Login';
+import Signup from './Signup';
+import Home from './Home';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
+import Collapse from 'react-bootstrap/Collapse';
 
 const App = () => {
-  const [stocks, setStocks] = useState([]);
-  const getData = () => {
-    axios.get('http://localhost:3000/api/stock')
-      .then(res => {
-        console.log('hllo');
-        setStocks(res.data);
-      })
-      .catch(err => console.log(err));
-  }
-  const deleteStock = (id: string) => {
-    axios.delete(`http://localhost:3000/api/stock/${id}`)
-      .then(() => getData())
-      .catch(error => console.log(error));
-  }
-  useEffect(() => {
-    getData();
-  }, []);
-  useEffect(() => {
-    getData();
-  }, stocks);
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openSignup, setOpenSignup] = useState(false);
 
   return (
-    <Container>
-      <TickerSearch getData={getData}/>
-      <Breakdown stocks={stocks} deleteStock={deleteStock} />
-      <EquationInputs stocks={stocks} deleteStock={deleteStock} />
-    </Container>
+    <Router>
+      <Switch>
+        <Route path='/landingPage'>
+          <ul className='landingPage'>
+            <li id='login' onClick={() => {
+              setOpenLogin(!openLogin);
+              setOpenSignup(false);
+            }} className='route'>Login</li>
+            <Collapse in={openLogin}>
+              <div>
+                <Login />
+              </div>
+            </Collapse>
+            <li id='signup' onClick={() => {
+              setOpenSignup(!openSignup);
+              setOpenLogin(false);
+            }} className='route'>Sign up</li>
+            <Collapse in={openSignup}>
+              <div>
+                <Signup />
+              </div>
+            </Collapse>
+          </ul>
+        </Route>
+        <Route exact path='/'>
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

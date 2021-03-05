@@ -5,7 +5,7 @@ import axios from 'axios';
 
 db;
 
-export interface Stock extends mongoose.Document {
+interface Stock extends mongoose.Document {
   ticker: string;
   assets: number;
   liabilities: number;
@@ -16,7 +16,7 @@ export interface Stock extends mongoose.Document {
   cashFlow: number;
 };
 
-export const stockSchema = new mongoose.Schema({
+const stockSchema = new mongoose.Schema({
   ticker: { type: String, required: true },
   assets: { type: Number, required: true },
   liabilities: { type: Number, required: true },
@@ -32,7 +32,6 @@ const Stock = mongoose.model<Stock>('Stock', stockSchema);
 export const findAll = (req: express.Request, res: express.Response) => {
   Stock.find()
     .then(data => {
-      console.log(data);
       res.send(data)
     })
     .catch(err => res.send(err));
@@ -102,21 +101,18 @@ export const create = (req: express.Request, res:express.Response) => {
 
         for (let i = 0; i < 4; i++) {
           for (let key in balanceSheetMetrics) {
-            console.log('balance', balanceSheetStatements[i][key]);
             if (balanceSheetStatements[i][key] !== undefined) {
               balanceSheetMetrics[key].value += balanceSheetStatements[i][key].raw;
               balanceSheetMetrics[key].count++;
             }
           }
           for (let key in incomeStatementMetrics) {
-            console.log('income', incomeStatementHistory[i][key]);
             if (incomeStatementHistory[i][key] !== undefined) {
               incomeStatementMetrics[key].value += incomeStatementHistory[i][key].raw
               incomeStatementMetrics[key].count++;
             }
           }
           for (let key in cashFlowMetrics) {
-            console.log('cashflow', cashflowStatements[i]);
             if (cashflowStatements[i][key]) {
               cashFlowMetrics[key].value += cashflowStatements[i][key].raw;
               cashFlowMetrics[key].count++;
