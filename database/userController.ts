@@ -46,10 +46,17 @@ export const login = (user: IUser, req: express.Request, res: express.Response) 
   }
   User.find({ username, })
     .then((response) => {
-      const { hash } = response;
+      const { hash } = response[0];
+      console.log(response);
       bcrypt.compare(password, hash)
-        .then(() => res.send('login successful'))
-        .catch(err => res.send('login failed'));
+        .then((result) => {
+          if (result) {
+            res.send('login successful');
+          } else {
+            res.status(401).send();
+          }
+        })
+        .catch(err => res.status(500).send('login failed'));
     })
     .catch(err => res.send('Invalid username'))
 };
