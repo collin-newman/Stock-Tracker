@@ -160,13 +160,11 @@ export const create = (req: express.Request, res:express.Response) => {
           res.send(data);
         })
         .catch(err => {
-          console.log('Error saving to database---------------');
           console.log(err);
           res.send(err);
         })
     })
     .catch(function (error) {
-      console.log('Error fetching data---------------------');
       console.log(error);
       res.send(error);
     });
