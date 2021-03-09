@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import db from './index';
 import * as express from 'express';
 import axios from 'axios';
-import * as api_key from '../keys/api_key.json';
+import * as keys from '../keys/api_key.json';
 
 db;
 
@@ -45,7 +45,7 @@ export const create = (req: express.Request, res:express.Response) => {
     url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials',
     params: {symbol: ticker.toUpperCase(), region: 'US'},
     headers: {
-      'x-rapidapi-key': api_key,
+      'x-rapidapi-key': keys.api_key,
       'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com'
     }
   };
@@ -160,11 +160,13 @@ export const create = (req: express.Request, res:express.Response) => {
           res.send(data);
         })
         .catch(err => {
+          console.log('Error saving to database---------------');
           console.log(err);
           res.send(err);
         })
     })
     .catch(function (error) {
+      console.log('Error fetching data---------------------');
       console.log(error);
       res.send(error);
     });
@@ -172,7 +174,6 @@ export const create = (req: express.Request, res:express.Response) => {
 
 export const deleteStock = (req: express.Request, res: express.Response) => {
   const stockId = req.params.id;
-  console.log(stockId);
   Stock.findOneAndDelete({ _id: stockId })
     .then(data => res.send(data))
     .catch(err => res.send(err));
