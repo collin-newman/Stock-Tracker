@@ -57,6 +57,14 @@ body {
   align-items: center;
 }
 
-.headerItem {
-  width: 100%;
+.headerInput {
+  background-color: rgba(42, 81, 123, 0.858);
+  width: 5rem;
+  color: white;
+  text-align: center;
+}
+
+.headerInput::placeholder {
+  color: white;
+  text-align: center;
 }

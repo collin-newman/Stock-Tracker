@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import db from './index';
 import * as express from 'express';
 import axios from 'axios';
+import * as api_key from '../keys/api_key.json';
 
 db;
 
@@ -44,7 +45,7 @@ export const create = (req: express.Request, res:express.Response) => {
     url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials',
     params: {symbol: ticker.toUpperCase(), region: 'US'},
     headers: {
-      'x-rapidapi-key': 'c4182ea640msh91c3897924ad99ap13e4f9jsn42bf788eaff9',
+      'x-rapidapi-key': api_key,
       'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com'
     }
   };

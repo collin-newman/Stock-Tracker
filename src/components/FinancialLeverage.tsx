@@ -63,8 +63,8 @@ const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
               overlay={renderEquation}
             >
               <th className='centerByCol'>
-                <p className='headerItem'>Debt To Equity Ratio</p>
-                <input className='headerItem' type='text' placeholder='limit' />
+                <p>Debt To Equity Ratio</p>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
               </th>
             </OverlayTrigger>
           </tr>
