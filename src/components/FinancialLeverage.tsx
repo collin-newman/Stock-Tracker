@@ -44,15 +44,17 @@ const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
 
   return (
     <>
-      <Table striped bordered hover variant="dark" className='centerText'>
+      <Table striped bordered hover variant="dark" responsive className='centerText'>
         <thead>
-          <OverlayTrigger
-            placement="auto"
-            delay={{ show: 250, hide: 400 }}
-            overlay={renderTableDescription}
-          >
-            <th colSpan={3}>Financial Leverage</th>
-          </OverlayTrigger>
+          <tr>
+            <OverlayTrigger
+              placement="auto"
+              delay={{ show: 250, hide: 400 }}
+              overlay={renderTableDescription}
+            >
+              <th colSpan={3}>Financial Leverage</th>
+            </OverlayTrigger>
+          </tr>
           <tr>
             <th>Stock</th>
             <OverlayTrigger
@@ -60,7 +62,10 @@ const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
               delay={{ show: 250, hide: 400 }}
               overlay={renderEquation}
             >
-              <th>Debt To Equity Ratio</th>
+              <th className='centerByCol'>
+                <p className='headerItem'>Debt To Equity Ratio</p>
+                <input className='headerItem' type='text' placeholder='limit' />
+              </th>
             </OverlayTrigger>
           </tr>
         </thead>

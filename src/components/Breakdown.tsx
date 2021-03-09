@@ -2,8 +2,8 @@ import React from 'react';
 import Liquidity from './Liquidity';
 import FinancialLeverage from './FinancialLeverage';
 import Profitability from './Profitability';
+import EquationInputs from './EquationInput';
 import Card from 'react-bootstrap/Card'
-import ListGroup from 'react-bootstrap/ListGroup';
 
 interface stock {
   _id: string;
@@ -26,20 +26,11 @@ const Breakdown = ({ stocks, deleteStock }: iBreakdown) => {
   return (
     <section className='mainItem'>
       <Card style={{ width: '100%' }}>
-        <ListGroup variant="flush">
-          <ListGroup.Item>
-            <h2>Fundamentals at a glance</h2>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Liquidity stocks={stocks} deleteStock={deleteStock}/>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <FinancialLeverage stocks={stocks} deleteStock={deleteStock}/>
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <Profitability stocks={stocks} deleteStock={deleteStock}/>
-          </ListGroup.Item>
-        </ListGroup>
+        <h2>Fundamentals at a glance</h2>
+        <Liquidity stocks={stocks} deleteStock={deleteStock}/>
+        <FinancialLeverage stocks={stocks} deleteStock={deleteStock}/>
+        <Profitability stocks={stocks} deleteStock={deleteStock} />
+        <EquationInputs stocks={stocks} deleteStock={deleteStock} />
       </Card>
     </section>
   );
