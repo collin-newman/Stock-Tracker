@@ -62,7 +62,10 @@ const Profitability = ({ stocks, deleteStock }: iStocks) => {
               delay={{ show: 250, hide: 400 }}
               overlay={renderEquation}
             >
-              <th>Gross Profit Margin</th>
+              <th>
+                <p>Gross Profit Margin</p>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+              </th>
             </OverlayTrigger>
           </tr>
         </thead>

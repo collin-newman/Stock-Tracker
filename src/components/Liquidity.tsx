@@ -65,14 +65,20 @@ const Liquidity = ({ stocks, deleteStock }: iStocks) => {
               delay={{ show: 250, hide: 400 }}
               overlay={renderCurrentRatio}
             >
-              <th>Current Ratio</th>
+              <th>
+                <p>Current Ratio</p>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+              </th>
             </OverlayTrigger>
             <OverlayTrigger
               placement="top"
               delay={{ show: 250, hide: 400 }}
               overlay={renderCashFlow}
             >
-              <th>Operating Cash Flow Ratio</th>
+              <th>
+                <p>Operating Cash Flow Ratio</p>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+              </th>
             </OverlayTrigger>
           </tr>
         </thead>
