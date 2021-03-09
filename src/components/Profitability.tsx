@@ -46,13 +46,15 @@ const Profitability = ({ stocks, deleteStock }: iStocks) => {
     <>
       <Table striped bordered hover variant="dark" className='centerText'>
         <thead>
-          <OverlayTrigger
-            placement='auto'
-            delay={{ show: 250, hide: 400 }}
-            overlay={renderTableDescription}
-          >
-            <th colSpan={3}>Profitability</th>
-          </OverlayTrigger>
+          <tr>
+            <OverlayTrigger
+              placement='auto'
+              delay={{ show: 250, hide: 400 }}
+              overlay={renderTableDescription}
+            >
+              <th colSpan={3}>Profitability</th>
+            </OverlayTrigger>
+          </tr>
           <tr>
             <th>Stock</th>
             <OverlayTrigger
