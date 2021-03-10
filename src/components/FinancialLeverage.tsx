@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
 import Table from 'react-bootstrap/Table';
@@ -41,7 +41,11 @@ const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
     const id = (e.target as Element).getAttribute('data-id');
     deleteStock(id);
   };
-
+  const [limit, setLimit] = useState(window.localStorage.getItem('debtToEquityLimit') || null);
+  const updateLimit = (e: any) => {
+    setLimit(e.target.value);
+    window.localStorage.setItem('debtToEquityLimit', e.target.value);
+  };
   return (
     <>
       <Table striped bordered hover variant="dark" responsive className='centerText'>
@@ -64,7 +68,7 @@ const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
             >
               <th className='centerByCol'>
                 <p>Debt To Equity Ratio</p>
-                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1' onChange={updateLimit} value={limit || ''}/>
               </th>
             </OverlayTrigger>
           </tr>
