@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
 import Table from 'react-bootstrap/Table';
@@ -37,9 +37,18 @@ const renderEquation = (props: any) => (
 
 
 const Profitability = ({ stocks, deleteStock }: iStocks) => {
+
+  const windowLimit = Number(window.localStorage.getItem('profitabilityRatioLimit'));
+  const [limit, setLimit] = useState<number | null>(windowLimit || null);
+
   const handleClick = (e: any) => {
     const id = (e.target as Element).getAttribute('data-id');
     deleteStock(id);
+  };
+
+  const updateLimit = (e: any) => {
+    setLimit(e.target.value);
+    window.localStorage.setItem('profitabilityRatioLimit', e.target.value);
   };
 
   return (
@@ -64,13 +73,19 @@ const Profitability = ({ stocks, deleteStock }: iStocks) => {
             >
               <th>
                 <p>Gross Profit Margin</p>
-                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1' onChange={updateLimit} value={limit || ''}/>
               </th>
             </OverlayTrigger>
           </tr>
         </thead>
         <tbody>
-          {stocks.map((stock: iStock) => (
+        {stocks.map((stock: iStock) => {
+          const profitabilityRatio = Math.round(((stock.revenue - stock.costOfRevenue) / stock.revenue) * 100) / 100;
+          let textColor = 'white';
+          if (limit) {
+            textColor = profitabilityRatio < limit ? 'red' : 'white';
+          }
+          return (
             <tr>
               <Button
                 onClick={handleClick}
@@ -80,9 +95,10 @@ const Profitability = ({ stocks, deleteStock }: iStocks) => {
               >
                 <span>{stock.ticker}</span>
               </Button>
-              <td>{Math.round(((stock.revenue - stock.costOfRevenue) / stock.revenue) * 100) / 100}</td>
+              <td style={{ color: textColor }}>{profitabilityRatio}</td>
             </tr>
-          ))}
+          );
+        })}
         </tbody>
       </Table>
     </>

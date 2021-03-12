@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
 import Table from 'react-bootstrap/Table';
@@ -40,9 +40,26 @@ const renderCashFlow = (props: any) => (
 );
 
 const Liquidity = ({ stocks, deleteStock }: iStocks) => {
+
+  const currentRatioLimit = Number(window.localStorage.getItem('currentRatioLimit'));
+  const cashFlowRatioLimit = Number(window.localStorage.getItem('cashFlowRatioLimit'));
+
+  const [currentLimit, setCurrentLimit] = useState(currentRatioLimit || null);
+  const [cashFlowLimit, setCashFlowLimit] = useState(cashFlowRatioLimit || null);
+
   const handleClick = (e: any) => {
     const id = (e.target as Element).getAttribute('data-id');
     deleteStock(id);
+  };
+
+  const updateCurrentLimit = (e: any) => {
+    window.localStorage.setItem('currentRatioLimit', e.target.value);
+    setCurrentLimit(e.target.value);
+  };
+
+  const updateCashFlowLimit = (e: any) => {
+    window.localStorage.setItem('cashFlowRatioLimit', e.target.value);
+    setCashFlowLimit(e.target.value);
   };
 
   return (
@@ -67,7 +84,7 @@ const Liquidity = ({ stocks, deleteStock }: iStocks) => {
             >
               <th>
                 <p>Current Ratio</p>
-                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1' onChange={updateCurrentLimit} value={currentLimit || ''}/>
               </th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -77,28 +94,41 @@ const Liquidity = ({ stocks, deleteStock }: iStocks) => {
             >
               <th>
                 <p>Operating Cash Flow Ratio</p>
-                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1' onChange={updateCashFlowLimit} value={cashFlowLimit || ''}/>
               </th>
             </OverlayTrigger>
           </tr>
         </thead>
         <tbody>
-          {stocks.map((stock: iStock) => (
-            <tr>
-              <td>
-                <Button
-                  onClick={handleClick}
-                  className='myButton'
-                  variant='outline-light'
-                  data-id={stock._id}
-                >
-                  <span>{stock.ticker}</span>
-                </Button>
-              </td>
-              <td>{Math.round((stock.assets / stock.liabilities) * 100) / 100}</td>
-              <td>{Math.round((stock.cashFlow / stock.liabilities) * 100) / 100}</td>
-            </tr>
-          ))}
+          {stocks.map((stock: iStock) => {
+            const currentRatio = Math.round((stock.assets / stock.liabilities) * 100) / 100;
+            const cashFlowRatio = Math.round((stock.cashFlow / stock.liabilities) * 100) / 100;
+            let currentTextColor = 'white';
+            let cashFlowTextColor = 'white';
+            if (currentLimit) {
+              currentTextColor = currentRatio < currentLimit ? 'red' : 'white';
+            }
+            if (cashFlowLimit) {
+              cashFlowTextColor = cashFlowRatio < cashFlowLimit ? 'red' : 'white';
+            }
+
+            return (
+              <tr>
+                <td>
+                  <Button
+                    onClick={handleClick}
+                    className='myButton'
+                    variant='outline-light'
+                    data-id={stock._id}
+                  >
+                    <span>{stock.ticker}</span>
+                  </Button>
+                </td>
+                <td style={{ color: currentTextColor }}>{currentRatio}</td>
+                <td style={{ color: cashFlowTextColor }}>{cashFlowRatio}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </Table>
     </>
