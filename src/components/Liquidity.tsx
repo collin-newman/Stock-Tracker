@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import OverlayTrigger from 'react-bootstrap/esm/OverlayTrigger';
 import Tooltip from 'react-bootstrap/esm/Tooltip';
 import Table from 'react-bootstrap/Table';
@@ -40,9 +40,46 @@ const renderCashFlow = (props: any) => (
 );
 
 const Liquidity = ({ stocks, deleteStock }: iStocks) => {
+
+  const currentRatioLimit = Number(window.localStorage.getItem('currentRatioLimit'));
+  const cashFlowRatioLimit = Number(window.localStorage.getItem('cashFlowRatioLimit'));
+
+  interface iLimit {
+    current: number | null;
+    cashFlow: number | null;
+  };
+
+  const liquidityLimits: iLimit = {
+    current: currentRatioLimit,
+    cashFlow: cashFlowRatioLimit,
+  };
+  const initialLimit = {
+    cashFlow: null,
+    current: null,
+  };
+  const [limit, setLimit] = useState<iLimit>(liquidityLimits || initialLimit);
+
   const handleClick = (e: any) => {
     const id = (e.target as Element).getAttribute('data-id');
     deleteStock(id);
+  };
+
+  const updateLimit = (e: any) => {
+    const ratio = (e.target as Element).getAttribute('data-ratio');
+    if (ratio === 'current') {
+      const newLimit = limit;
+      newLimit.current = e.target.value;
+      window.localStorage.setItem('currentRatioLimit', e.target.value);
+      console.log(limit, newLimit);
+      setLimit(newLimit);
+    }
+    if (ratio === 'cashFlow') {
+      console.log('updateing cash flow');
+      const newLimit = limit;
+      newLimit.cashFlow = e.target.value;
+      window.localStorage.setItem('cashFlowLimit', e.target.value);
+      setLimit(newLimit);
+    }
   };
 
   return (
@@ -67,7 +104,7 @@ const Liquidity = ({ stocks, deleteStock }: iStocks) => {
             >
               <th>
                 <p>Current Ratio</p>
-                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1' onChange={updateLimit} value={limit.current || ''} data-ratio='current'/>
               </th>
             </OverlayTrigger>
             <OverlayTrigger
@@ -77,28 +114,41 @@ const Liquidity = ({ stocks, deleteStock }: iStocks) => {
             >
               <th>
                 <p>Operating Cash Flow Ratio</p>
-                <input className='headerInput' type='number' placeholder='limit' step='0.1'/>
+                <input className='headerInput' type='number' placeholder='limit' step='0.1' onChange={updateLimit} value={limit.cashFlow || ''} data-ratio='cashFlow'/>
               </th>
             </OverlayTrigger>
           </tr>
         </thead>
         <tbody>
-          {stocks.map((stock: iStock) => (
-            <tr>
-              <td>
-                <Button
-                  onClick={handleClick}
-                  className='myButton'
-                  variant='outline-light'
-                  data-id={stock._id}
-                >
-                  <span>{stock.ticker}</span>
-                </Button>
-              </td>
-              <td>{Math.round((stock.assets / stock.liabilities) * 100) / 100}</td>
-              <td>{Math.round((stock.cashFlow / stock.liabilities) * 100) / 100}</td>
-            </tr>
-          ))}
+          {stocks.map((stock: iStock) => {
+            const currentRatio = Math.round((stock.assets / stock.liabilities) * 100) / 100;
+            const cashFlowRatio = Math.round((stock.cashFlow / stock.liabilities) * 100) / 100;
+            let currentTextColor = 'white';
+            let cashFlowTextColor = 'white';
+            if (limit.current) {
+              currentTextColor = currentRatio < limit.current ? 'red' : 'white';
+            }
+            if (limit.cashFlow) {
+              cashFlowTextColor = cashFlowRatioLimit < limit.cashFlow ? 'red' : 'white';
+            }
+
+            return (
+              <tr>
+                <td>
+                  <Button
+                    onClick={handleClick}
+                    className='myButton'
+                    variant='outline-light'
+                    data-id={stock._id}
+                  >
+                    <span>{stock.ticker}</span>
+                  </Button>
+                </td>
+                <td style={{ color: currentTextColor }}>{currentRatio}</td>
+                <td style={{ color: cashFlowTextColor }}>{cashFlowRatio}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </Table>
     </>

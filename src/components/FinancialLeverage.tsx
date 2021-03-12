@@ -37,15 +37,19 @@ const renderEquation = (props: any) => (
 
 
 const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
+  const windowLimit = Number(window.localStorage.getItem('debtToEquityLimit'));
+  const [limit, setLimit] = useState<number | null>(windowLimit || null);
+
   const handleClick = (e: any) => {
     const id = (e.target as Element).getAttribute('data-id');
     deleteStock(id);
   };
-  const [limit, setLimit] = useState(window.localStorage.getItem('debtToEquityLimit') || null);
+
   const updateLimit = (e: any) => {
     setLimit(e.target.value);
     window.localStorage.setItem('debtToEquityLimit', e.target.value);
   };
+
   return (
     <>
       <Table striped bordered hover variant="dark" responsive className='centerText'>
@@ -74,19 +78,26 @@ const FinancialLeverage = ({ stocks, deleteStock }: iStocks) => {
           </tr>
         </thead>
         <tbody>
-          {stocks.map((stock: iStock) => (
-            <tr>
-              <Button
-                onClick={handleClick}
-                className='myButton'
-                variant='outline-light'
-                data-id={stock._id}
-              >
-                <span>{stock.ticker}</span>
-              </Button>
-              <td>{Math.round((stock.debt / stock.equity) * 100) / 100}</td>
-            </tr>
-          ))}
+          {stocks.map((stock: iStock) => {
+            const debtToEquityRatio: number = Math.round((stock.debt / stock.equity) * 100) / 100;
+            let textColor = 'white';
+            if (limit) {
+              textColor = debtToEquityRatio < limit ? 'red' : 'white';
+            }
+            return (
+              <tr>
+                <Button
+                  onClick={handleClick}
+                  className='myButton'
+                  variant='outline-light'
+                  data-id={stock._id}
+                >
+                  <span>{stock.ticker}</span>
+                </Button>
+                <td style={{color: textColor}}>{debtToEquityRatio}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </>
