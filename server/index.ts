@@ -12,14 +12,19 @@ app.use(parser.json());
 app.use(express.static('dist'));
 app.use(passport.initialize());
 
-app.post('/api/signup', (req: express.Request, res: express.Response) => {
+app.post('/api/user/signup', (req: express.Request, res: express.Response) => {
   const { username, password } = req.body;
   User.create({ username, password }, req, res);
 });
 
-app.post('/api/login', (req: express.Request, res: express.Response) => {
+app.post('/api/user/login', (req: express.Request, res: express.Response) => {
   const { username, password } = req.body;
   User.login({ username, password }, req, res);
+});
+
+app.post('/api/user/addStock', (req: express.Request, res: express.Response) => {
+  const { username, stock } = req.body;
+  User.addStock(stock, username, req, res);
 });
 
 app.get('/api/stock', (req: express.Request, res: express.Response) => {

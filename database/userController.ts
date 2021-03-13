@@ -8,6 +8,7 @@ db;
 interface IUserSchema extends mongoose.Document {
   username: string;
   hash: string;
+  stocks: string[];
 };
 
 interface IUser {
@@ -18,6 +19,7 @@ interface IUser {
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   hash: { type: String, required: true },
+  stocks: [String],
 });
 
 const User = mongoose.model<IUserSchema>('User', userSchema);
@@ -26,7 +28,7 @@ export const create = (user: IUser, req: express.Request, res: express.Response)
   const { username, password } = user;
   const hashedPassword = bcrypt.hash(password, 10)
     .then(hash => {
-      User.create({ username, hash, })
+      User.create({ username, hash, stocks: [], })
         .then(() => res.send('Successful signup'))
         .catch(err => {
           console.log(err);
@@ -59,4 +61,22 @@ export const login = (user: IUser, req: express.Request, res: express.Response) 
         .catch(err => res.status(500).send('login failed'));
     })
     .catch(err => res.send('Invalid username'))
+};
+
+export const addStock = (stock: string, username: string, req: express.Request, res: express.Response) => {
+  console.log(username, stock);
+  User.findOneAndUpdate({ username, }, { $push: { stocks: stock } }, { new: true })
+    .then((response) => {
+      //response may be null and not throw an error
+      if (response) {
+        const { stocks } = response;
+        res.send(stocks);
+      } else {
+        res.send([]);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send(err);
+    });
 };
