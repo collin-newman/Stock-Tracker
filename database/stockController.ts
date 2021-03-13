@@ -6,7 +6,7 @@ import * as keys from '../keys/api_key.json';
 
 db;
 
-interface Stock extends mongoose.Document {
+interface iStockDocument extends mongoose.Document {
   ticker: string;
   assets: number;
   liabilities: number;
@@ -15,10 +15,23 @@ interface Stock extends mongoose.Document {
   revenue: number;
   costOfRevenue: number;
   cashFlow: number;
+  lastUpdated: Date;
+};
+
+interface iStock {
+  ticker: string;
+  assets: number;
+  liabilities: number;
+  equity: number;
+  debt: number;
+  revenue: number;
+  costOfRevenue: number;
+  cashFlow: number;
+  lastUpdated: Date;
 };
 
 const stockSchema = new mongoose.Schema({
-  ticker: { type: String, required: true },
+  ticker: { type: String, required: true, unique: true },
   assets: { type: Number, required: true },
   liabilities: { type: Number, required: true },
   equity: { type: Number, required: true },
@@ -26,9 +39,10 @@ const stockSchema = new mongoose.Schema({
   revenue: { type: Number, required: true },
   costOfRevenue: { type: Number, required: true },
   cashFlow: { type: Number, required: true },
+  lastUpdated: { type: Date, required: true },
 });
 
-const Stock = mongoose.model<Stock>('Stock', stockSchema);
+const Stock = mongoose.model<iStockDocument>('Stock', stockSchema);
 
 export const findAll = (req: express.Request, res: express.Response) => {
   Stock.find()
@@ -145,7 +159,7 @@ export const create = (req: express.Request, res:express.Response) => {
       }
 
       const { avgAssets, avgLiabilities, avgEquity, avgDebt, avgRevenue, avgCostOfRevenue, avgCashFlow } = getMetrics();
-      const stock: object = {
+      const stock: iStock = {
         ticker: ticker.toUpperCase(),
         assets: avgAssets,
         liabilities: avgLiabilities,
@@ -154,6 +168,7 @@ export const create = (req: express.Request, res:express.Response) => {
         revenue: avgRevenue,
         costOfRevenue: avgCostOfRevenue,
         cashFlow: avgCashFlow,
+        lastUpdated: new Date(Date.now()),
       };
       Stock.create(stock)
         .then(data => {
@@ -181,4 +196,21 @@ export const deleteAll = (req: express.Request, res: express.Response) => {
   Stock.deleteMany({})
     .then(response => res.send(response))
     .catch(error => res.send(error));
+}
+
+export const findStock = (ticker: string, req: express.Request, res: express.Response) => {
+  Stock.find({ ticker, })
+    .then((response) => {
+      // ticker already exists in database
+      if (response) {
+        console.log(response);
+
+      } else {
+        // ticker was not in db so simple add it
+      }
+    })
+    .catch((error) => {
+      console.log('Error findind stock ticker');
+      res.status(500).send('Error finding the given stock ticker');
+    });
 }
