@@ -40,12 +40,6 @@ export const create = (user: IUser, req: express.Request, res: express.Response)
 
 export const login = (user: IUser, req: express.Request, res: express.Response) => {
   const { username, password } = user;
-  interface UserResponse {
-    _id: string;
-    username: string;
-    hash: string;
-    _v: number;
-  }
   User.find({ username, })
     .then((response) => {
       const { hash } = response[0];
