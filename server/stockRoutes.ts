@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as Stock from '../database/stockController';
 
-export const stockRouter: express.Router = express.Router();
+const stockRouter: express.Router = express.Router();
 
 stockRouter.get('/api/stock', (req: express.Request, res: express.Response) => {
   console.log('GET');
@@ -19,4 +19,4 @@ stockRouter.delete('/api/stock/:id', (req: express.Request, res: express.Respons
   Stock.deleteStock(req, res);
 });
 
-module.exports = stockRouter;
+export default stockRouter;
