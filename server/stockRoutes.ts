@@ -3,17 +3,17 @@ import * as Stock from '../database/stockController';
 
 const stockRouter: express.Router = express.Router();
 
-stockRouter.get('/api/stock', (req: express.Request, res: express.Response) => {
+stockRouter.get('/', (req: express.Request, res: express.Response) => {
   console.log('GET');
   Stock.findAll(req, res);
 });
 
-stockRouter.post('/api/stock', (req: express.Request, res: express.Response) => {
+stockRouter.post('/', (req: express.Request, res: express.Response) => {
   console.log('Post');
   Stock.create(req, res);
 });
 
-stockRouter.delete('/api/stock/:id', (req: express.Request, res: express.Response) => {
+stockRouter.delete('/:id', (req: express.Request, res: express.Response) => {
   console.log('Delete');
   console.log(req.params.id);
   Stock.deleteStock(req, res);
