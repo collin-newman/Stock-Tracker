@@ -214,12 +214,15 @@ export const findStockList = async (stocks: string[]) => {
   stocks.forEach((ticker) => {
     queries.push(
       Stock.findOne({ 'ticker': ticker })
-        .then((response) => {
+        .then(async (response) => {
           if (response) {
             console.log(response);
             stockList.push(response);
           } else {
-            console.log('Not in database', ticker);
+            const newStock = await create(ticker);
+            if (newStock) {
+              stockList.push(newStock);
+            }
           }
         })
         .catch((error) => {
