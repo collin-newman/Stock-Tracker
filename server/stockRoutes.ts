@@ -13,6 +13,11 @@ stockRouter.post('/', (req: express.Request, res: express.Response) => {
   Stock.create(req, res);
 });
 
+stockRouter.get('/stockList', (req: express.Request, res: express.Response) => {
+  const stocks = req.body.stocks;
+  Stock.findStockList(stocks, req, res);
+});
+
 stockRouter.delete('/:id', (req: express.Request, res: express.Response) => {
   console.log('Delete');
   console.log(req.params.id);

@@ -196,7 +196,7 @@ export const deleteAll = (req: express.Request, res: express.Response) => {
   Stock.deleteMany({})
     .then(response => res.send(response))
     .catch(error => res.send(error));
-}
+};
 
 export const findStock = (ticker: string, req: express.Request, res: express.Response) => {
   Stock.find({ ticker, })
@@ -213,4 +213,34 @@ export const findStock = (ticker: string, req: express.Request, res: express.Res
       console.log('Error findind stock ticker');
       res.status(500).send('Error finding the given stock ticker');
     });
-}
+};
+
+export const findStockList = async (stocks: string[], req: express.Request, res: express.Response) => {
+  const stockList: any = [];
+  const queries: any = [];
+
+  stocks.forEach((ticker) => {
+    queries.push(
+      Stock.findOne({ 'ticker': ticker })
+        .then((response) => {
+          if (response) {
+            console.log(response);
+            stockList.push(response);
+          } else {
+            console.log('Not in database', ticker);
+          }
+        })
+        .catch((error) => {
+          console.log('Error findind stock ticker');
+        })
+    );
+  });
+
+  Promise.all(queries)
+    .then(() => {
+      res.send(stockList);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
