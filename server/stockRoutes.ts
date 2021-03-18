@@ -3,25 +3,34 @@ import * as Stock from '../database/stockController';
 
 const stockRouter: express.Router = express.Router();
 
-stockRouter.get('/', (req: express.Request, res: express.Response) => {
+stockRouter.get('/', async (req: express.Request, res: express.Response) => {
   console.log('GET');
-  Stock.findAll(req, res);
+  const stocks = await Stock.findAll();
+  res.send(stocks);
 });
 
-stockRouter.post('/', (req: express.Request, res: express.Response) => {
+stockRouter.post('/', async (req: express.Request, res: express.Response) => {
   console.log('Post');
-  Stock.create(req, res);
+  const { ticker } = req.body;
+  const newStock = await Stock.create(ticker);
+  res.send(newStock);
 });
 
-stockRouter.get('/stockList', (req: express.Request, res: express.Response) => {
+stockRouter.get('/stockList', async (req: express.Request, res: express.Response) => {
   const stocks = req.body.stocks;
-  Stock.findStockList(stocks, req, res);
+  const stockList = await Stock.findStockList(stocks);
+  res.send(stockList);
 });
 
-stockRouter.delete('/:id', (req: express.Request, res: express.Response) => {
+stockRouter.delete('/:id', async (req: express.Request, res: express.Response) => {
   console.log('Delete');
-  console.log(req.params.id);
-  Stock.deleteStock(req, res);
+  const { id } = req.params;
+  const deleted = await Stock.deleteStock(id);
+  if (deleted) {
+    res.send('delted');
+  } else {
+    res.status(400).send('Stock not found');
+  }
 });
 
 export default stockRouter;
