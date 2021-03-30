@@ -43,7 +43,6 @@ export const login = async (user: IUser) => {
   try {
     const response = await User.find({ username, });
     const { hash } = response[0];
-    console.log(response);
     return bcrypt.compare(password, hash)
       .then((result) => {
         if (result) {

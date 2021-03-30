@@ -4,6 +4,9 @@ import { findStockList } from '../database/stockController';
 
 const userRouter: express.Router = express.Router();
 
+userRouter.get('/stocks', async (req: express.Request, res: express.Response) => {
+});
+
 userRouter.post('/signup', async (req: express.Request, res: express.Response) => {
   const { username, password } = req.body;
   const result = await User.create({ username, password });
@@ -11,7 +14,15 @@ userRouter.post('/signup', async (req: express.Request, res: express.Response) =
     if (result === 'server error') {
       res.status(500).send('server error');
     } else {
-      res.send('successful signup');
+      res.send();
+      // I dont think i need this code below once
+      // I have sessions setup
+      // res
+      //   .writeHead(200, {
+      //     "Set-Cookie": `username=${username}`,
+      //     "Access-Control-Allow-Credentials": "true"
+      //   })
+      //   .send();
     }
   } else {
     res.status(401).send('sorry that username is taken');
@@ -28,7 +39,16 @@ userRouter.post('/login', async (req: express.Request, res: express.Response) =>
     } else if (result === 'invalid username') {
       res.status(403).send('invalid username');
     }
-    res.send('successful login');
+    console.log('successful login0000000');
+    res.send();
+    // I dont think i need this code below once
+    // I have sessions setup
+    // res
+    //   .writeHead(200, {
+    //     "Set-Cookie": `username=${username}`,
+    //     "Access-Control-Allow-Credentials": "true"
+    //   })
+    //   .send();
   } else {
     res.send('Incorrect password');
   }
