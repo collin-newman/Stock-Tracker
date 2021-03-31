@@ -36,3 +36,6 @@ bower_components/
 
 #keys
 keys
+
+#env variables
+.env

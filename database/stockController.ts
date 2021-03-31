@@ -6,7 +6,7 @@ import * as keys from '../keys/api_key.json';
 
 db;
 
-interface Stock extends mongoose.Document {
+interface iStockDocument extends mongoose.Document {
   ticker: string;
   assets: number;
   liabilities: number;
@@ -15,10 +15,23 @@ interface Stock extends mongoose.Document {
   revenue: number;
   costOfRevenue: number;
   cashFlow: number;
+  lastUpdated: Date;
+};
+
+interface iStock {
+  ticker: string;
+  assets: number;
+  liabilities: number;
+  equity: number;
+  debt: number;
+  revenue: number;
+  costOfRevenue: number;
+  cashFlow: number;
+  lastUpdated: Date;
 };
 
 const stockSchema = new mongoose.Schema({
-  ticker: { type: String, required: true },
+  ticker: { type: String, required: true, unique: true },
   assets: { type: Number, required: true },
   liabilities: { type: Number, required: true },
   equity: { type: Number, required: true },
@@ -26,20 +39,22 @@ const stockSchema = new mongoose.Schema({
   revenue: { type: Number, required: true },
   costOfRevenue: { type: Number, required: true },
   cashFlow: { type: Number, required: true },
+  lastUpdated: { type: Date, required: true },
 });
 
-const Stock = mongoose.model<Stock>('Stock', stockSchema);
+const Stock = mongoose.model<iStockDocument>('Stock', stockSchema);
 
-export const findAll = (req: express.Request, res: express.Response) => {
-  Stock.find()
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => res.send(err));
+export const findAll = async () => {
+  try {
+    const data = await Stock.find();
+    return data;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };
 
-export const create = (req: express.Request, res:express.Response) => {
-  const ticker: string = req.body.ticker;
+export const create = async (ticker: string) => {
   const options: object = {
     method: 'GET',
     url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials',
@@ -50,8 +65,8 @@ export const create = (req: express.Request, res:express.Response) => {
     }
   };
 
-  axios.request(options)
-    .then(function (response) {
+  return axios.request(options)
+    .then(async (response) => {
       const {
         balanceSheetHistoryQuarterly: { balanceSheetStatements },
         incomeStatementHistoryQuarterly: { incomeStatementHistory },
@@ -145,7 +160,7 @@ export const create = (req: express.Request, res:express.Response) => {
       }
 
       const { avgAssets, avgLiabilities, avgEquity, avgDebt, avgRevenue, avgCostOfRevenue, avgCashFlow } = getMetrics();
-      const stock: object = {
+      const stock: iStock = {
         ticker: ticker.toUpperCase(),
         assets: avgAssets,
         liabilities: avgLiabilities,
@@ -154,31 +169,75 @@ export const create = (req: express.Request, res:express.Response) => {
         revenue: avgRevenue,
         costOfRevenue: avgCostOfRevenue,
         cashFlow: avgCashFlow,
+        lastUpdated: new Date(Date.now()),
       };
-      Stock.create(stock)
-        .then(data => {
-          res.send(data);
-        })
-        .catch(err => {
-          console.log(err);
-          res.send(err);
-        })
+      try {
+        const newStock = await Stock.create(stock);
+        console.log(newStock);
+        return newStock;
+      } catch (err) {
+        console.log('Error creating new stock', stock);
+        console.log(err);
+        return null;
+      }
     })
     .catch(function (error) {
       console.log(error);
-      res.send(error);
+      return null;
     });
 };
 
-export const deleteStock = (req: express.Request, res: express.Response) => {
-  const stockId = req.params.id;
-  Stock.findOneAndDelete({ _id: stockId })
-    .then(data => res.send(data))
-    .catch(err => res.send(err));
+export const deleteStock = async (id: string) => {
+  try {
+    const data = await Stock.findOneAndDelete({ _id: id });
+    return data;
+  } catch (err) {
+    console.log('Error deleting entry with id:', id);
+    return null;
+  }
 };
 
-export const deleteAll = (req: express.Request, res: express.Response) => {
-  Stock.deleteMany({})
-    .then(response => res.send(response))
-    .catch(error => res.send(error));
-}
+export const deleteAll = async () => {
+  try {
+    const result = await Stock.deleteMany({});
+    return result;
+  } catch (err) {
+    console.log('Error deleting all');
+    return null;
+  }
+};
+
+export const findStockList = async (stocks: string[]) => {
+  const stockList: any = [];
+  const queries: any = [];
+
+  stocks.forEach((ticker) => {
+    queries.push(
+      Stock.findOne({ 'ticker': ticker })
+        .then(async (response) => {
+          if (response) {
+            console.log(response);
+            stockList.push(response);
+          } else {
+            const newStock = await create(ticker);
+            if (newStock) {
+              stockList.push(newStock);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log('Error findind stock ticker');
+        })
+    );
+  });
+
+  return Promise.all(queries)
+    .then(() => {
+      return stockList;
+    })
+    .catch((err) => {
+      console.log('Error finding the following stocks', stocks);
+      console.log(err);
+      return [];
+    });
+};
