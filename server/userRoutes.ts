@@ -1,11 +1,65 @@
 import * as express from 'express';
 import * as User from '../database/userController';
 import { findStockList } from '../database/stockController';
+import passport = require('passport');
+import * as bcrypt from 'bcrypt';
+const LocalStrategy = require('passport-local').Strategy;
+
+// Auth using Passport local strategy
+passport.use(new LocalStrategy(
+  {
+    usernameField: 'username',
+    passwordField: 'password',
+  },
+  async (username: string, password: string, done: any) => {
+    console.log('inside local strategy callback');
+
+    interface iUser {
+      _id: string;
+      username: string;
+      hash: string;
+      _v: number;
+      stocks: string[];
+    };
+
+    User.User.findOne({ username, }, (err: Error, user: any) => {
+
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'That username does not exist.' });
+      }
+      console.log(user);
+      console.log(password, user.hash);
+      bcrypt.compare(password, user.hash, (err, result) => {
+        if (err) {
+          console.log(err, false, { message: 'Server error please try again.' });
+          done(err);
+        } else {
+          if (result) {
+            done(null, user);
+          } else {
+            done(null, false, { message: 'Incorrect username and password combo.' });
+          }
+        }
+      });
+    });
+  }
+));
+
+passport.serializeUser((user: any, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.User.findById(id, (err: Error, user: any) => {
+    done(err, user);
+  });
+});
+
+
+// User routes
 
 const userRouter: express.Router = express.Router();
-
-userRouter.get('/stocks', async (req: express.Request, res: express.Response) => {
-});
 
 userRouter.post('/signup', async (req: express.Request, res: express.Response) => {
   const { username, password } = req.body;
@@ -14,44 +68,38 @@ userRouter.post('/signup', async (req: express.Request, res: express.Response) =
     if (result === 'server error') {
       res.status(500).send('server error');
     } else {
-      res.send();
-      // I dont think i need this code below once
-      // I have sessions setup
-      // res
-      //   .writeHead(200, {
-      //     "Set-Cookie": `username=${username}`,
-      //     "Access-Control-Allow-Credentials": "true"
-      //   })
-      //   .send();
+      passport.authenticate('local', (err, user, info) => {
+        console.log('Auth completed');
+        if (info) {return res.send(info.message)}
+        if (err) { return res.status(500).send(); }
+        if (!user) { return res.redirect('/login'); }
+        req.login(user, (err) => {
+          if (err) { return res.status(500).send(); }
+          return res.send("successful signup and login");
+        });
+      })(req, res);
     }
   } else {
     res.status(401).send('sorry that username is taken');
   }
 });
 
-userRouter.post('/login', async (req: express.Request, res: express.Response) => {
+userRouter.post('/login', (req: express.Request, res: express.Response) => {
   const { username, password } = req.body;
-  const result = await User.login({ username, password });
-  if (result) {
-    // successful login do session stuff here
-    if (result === 'server error') {
-      res.status(500).send('Internal error');
-    } else if (result === 'invalid username') {
-      res.status(403).send('invalid username');
-    }
-    console.log('successful login0000000');
-    res.send();
-    // I dont think i need this code below once
-    // I have sessions setup
-    // res
-    //   .writeHead(200, {
-    //     "Set-Cookie": `username=${username}`,
-    //     "Access-Control-Allow-Credentials": "true"
-    //   })
-    //   .send();
-  } else {
-    res.send('Incorrect password');
-  }
+  console.log('Login request');
+  passport.authenticate('local', (err, user, info) => {
+    console.log('Auth completed');
+    if (info) {return res.send(info.message)}
+    if (err) { return res.status(500).send(); }
+    if (!user) { return res.redirect('/login'); }
+    req.login(user, (err) => {
+      if (err) { return res.status(500).send(); }
+      return res.send("successful login");
+    });
+  })(req, res);
+});
+
+userRouter.get('/stocks', async (req: express.Request, res: express.Response) => {
 });
 
 userRouter.post('/addStock', async (req: express.Request, res: express.Response) => {
