@@ -70,8 +70,11 @@ userRouter.post('/signup', async (req: express.Request, res: express.Response) =
     } else {
       passport.authenticate('local', (err, user, info) => {
         console.log('Auth completed');
-        if (info) {return res.send(info.message)}
+        if (info) { return res.send(info.message); }
         if (err) { return res.status(500).send(); }
+        // not sure whhow to properly redirect back to login page
+        // since the front end is not setup for this yet
+        // possible bug here
         if (!user) { return res.redirect('/login'); }
         req.login(user, (err) => {
           if (err) { return res.status(500).send(); }
@@ -89,8 +92,11 @@ userRouter.post('/login', (req: express.Request, res: express.Response) => {
   console.log('Login request');
   passport.authenticate('local', (err, user, info) => {
     console.log('Auth completed');
-    if (info) {return res.send(info.message)}
+    if (info) { return res.send(info.message); }
     if (err) { return res.status(500).send(); }
+    // not sure how to properly redirect back to login page
+    // since the front end is not setup for this yet
+    // possible bug here
     if (!user) { return res.redirect('/login'); }
     req.login(user, (err) => {
       if (err) { return res.status(500).send(); }
