@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   stocks: [String],
 });
 
-const User = mongoose.model<IUserSchema>('User', userSchema);
+export const User = mongoose.model<IUserSchema>('User', userSchema);
 
 export const create = async (user: IUser) => {
   const { username, password } = user;
