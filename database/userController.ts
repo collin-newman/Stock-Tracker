@@ -1,7 +1,6 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import db from './index';
-import * as bcrypt from 'bcrypt';
-import * as express from 'express';
+import bcrypt from 'bcrypt';
 
 interface IUserSchema extends mongoose.Document {
   username: string;
