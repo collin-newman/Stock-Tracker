@@ -22,7 +22,7 @@ app.use(session({
   },
   secret: String(process.env.SECRET),
   store: MongoStore.create({
-    mongoUrl: process.env.MONGOURI || 'mongodb://localhost/mvp',
+    mongoUrl: process.env.MONGO || 'mongodb://localhost/mvp',
     ttl: 30, // = 14 * 24 * 60 * 60 14 days. Default
     autoRemove: 'native' // Default
   })
