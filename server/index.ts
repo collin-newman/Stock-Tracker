@@ -1,6 +1,4 @@
 import * as express from 'express';
-import * as Stock from '../database/stockController';
-import * as User from '../database/userController';
 import userRouter from './userRoutes';
 import stockRouter from './stockRoutes';
 import session = require('express-session');
