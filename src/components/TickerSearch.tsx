@@ -10,7 +10,6 @@ const TickerSearch = ({ getData }: any) => {
   const [ticker, setTicker] = useState('');
   const [fetch, setFetch] = useState('');
   const submit  = (e: React.FormEvent<EventTarget>): void => {
-    console.log('Adding', ticker);
     e.preventDefault();
     setFetch(ticker);
   };
@@ -36,7 +35,7 @@ const TickerSearch = ({ getData }: any) => {
             placeholder="Add a stock"
             aria-label="Add a stock"
             aria-describedby="basic-addon2"
-            onChange={(e) => setTicker(e.target.value)}
+            onChange={(e: any) => setTicker(e.target.value)}
             defaultValue=''
           />
           <InputGroup.Append>

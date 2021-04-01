@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import userRouter from './userRoutes';
 import stockRouter from './stockRoutes';
 import session = require('express-session');
