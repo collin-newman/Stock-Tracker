@@ -8,7 +8,8 @@
     "start": "nodemon ./dist/server/index.js",
     "react:dev": "webpack serve --config webpack.config.js --mode development --open Chrome",
     "build:front": "webpack --config webpack.config.js --mode production -w",
-    "build:backend": "tsc --build tsconfig.json -w"
+    "build:backend": "tsc --build tsconfig.json -w",
+    "heroku-postbuild": "webpack --config webpack.config.js --mode production && tsc --build tsconfig.json"
   },
   "repository": {
     "type": "git",
