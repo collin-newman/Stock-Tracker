@@ -22,7 +22,7 @@ passport.use(new LocalStrategy(
       stocks: string[];
     };
 
-    User.User.findOne({ username, }, (err: Error, user: any) => {
+    User.User.findOne({ username, }, (err: Error, user: iUser) => {
 
       if (err) { return done(err); }
       if (!user) {
