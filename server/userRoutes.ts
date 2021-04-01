@@ -1,8 +1,8 @@
-import * as express from 'express';
+import express from 'express';
 import * as User from '../database/userController';
 import { findStockList } from '../database/stockController';
 import passport = require('passport');
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 const LocalStrategy = require('passport-local').Strategy;
 
 // Auth using Passport local strategy
