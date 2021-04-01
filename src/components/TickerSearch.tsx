@@ -5,21 +5,25 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 
 const url = process.env.HOST || 'http://localhost:3000';
-
+console.log(url);
 const TickerSearch = ({ getData }: any) => {
   const [ticker, setTicker] = useState('');
   const [fetch, setFetch] = useState('');
-
   const submit  = (e: React.FormEvent<EventTarget>): void => {
+    console.log('Adding', ticker);
     e.preventDefault();
     setFetch(ticker);
   };
 
   useEffect(() => {
+    console.log('Use Effect');
     // wrap api call in if block to prevent using up a request on initial load
     if (fetch) {
       axios.post(`${url}/api/stock`, { ticker: fetch })
-        .then(response => getData())
+        .then(response => {
+          console.log(response);
+          getData();
+        })
         .catch(err => console.log(err));
     }
   }, [fetch]);
@@ -36,7 +40,7 @@ const TickerSearch = ({ getData }: any) => {
             defaultValue=''
           />
           <InputGroup.Append>
-            <Button variant="outline-secondary">add</Button>
+            <Button type='submit' variant="outline-secondary">add</Button>
           </InputGroup.Append>
         </InputGroup>
       </form>
