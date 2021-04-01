@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const url = process.env.HOST || 'http://localhost:3000';
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const submit = (e: React.FormEvent<EventTarget>): void => {
     e.preventDefault();
     console.log(username, password);
-    axios.post('http://localhost:3000/api/login', { username, password, })
+    axios.post(`${url}/api/login`, { username, password, })
       .then(response => console.log(response))
       .catch(err => console.log(err));
     setUsername('');
