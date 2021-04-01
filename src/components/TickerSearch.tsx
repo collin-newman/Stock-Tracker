@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 
+const url = process.env.HOST || 'http://localhost:3000';
+
 const TickerSearch = ({ getData }: any) => {
   const [ticker, setTicker] = useState('');
   const [fetch, setFetch] = useState('');
@@ -16,7 +18,7 @@ const TickerSearch = ({ getData }: any) => {
   useEffect(() => {
     // wrap api call in if block to prevent using up a request on initial load
     if (fetch) {
-      axios.post(`http://localhost:3000/api/stock`, { ticker: fetch })
+      axios.post(`${url}/api/stock`, { ticker: fetch })
         .then(response => getData())
         .catch(err => console.log(err));
     }

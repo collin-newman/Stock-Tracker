@@ -4,17 +4,19 @@ import TickerSearch from './TickerSearch';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 
+const url = process.env.HOST || 'http://localhost:3000/api/stock';
+
 const Home = () => {
   const [stocks, setStocks] = useState([]);
   const getData = () => {
-    axios.get('http://localhost:3000/api/stock')
+    axios.get(url)
       .then(res => {
         setStocks(res.data);
       })
       .catch(err => console.log(err));
   }
   const deleteStock = (id: string) => {
-    axios.delete(`http://localhost:3000/api/stock/${id}`)
+    axios.delete(`${url}/${id}`)
       .then(() => getData())
       .catch(error => console.log(error));
   }

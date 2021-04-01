@@ -10,7 +10,7 @@ import passport = require('passport');
 require('dotenv').config();
 
 const app: express.Application = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded());
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use(session({
   },
   secret: String(process.env.SECRET),
   store: MongoStore.create({
-    mongoUrl: 'mongodb://localhost/mvp',
+    mongoUrl: process.env.MONGOURI || 'mongodb://localhost/mvp',
     ttl: 30, // = 14 * 24 * 60 * 60 14 days. Default
     autoRemove: 'native' // Default
   })
