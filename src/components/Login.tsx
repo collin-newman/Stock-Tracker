@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+require('dotenv').config()
 
 const url = process.env.HOST || 'http://localhost:3000';
 
