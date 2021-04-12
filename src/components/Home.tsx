@@ -3,7 +3,6 @@ import Breakdown from './Breakdown';
 import TickerSearch from './TickerSearch';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
-require('dotenv').config()
 
 const url = process.env.HOST || 'http://localhost:3000';
 

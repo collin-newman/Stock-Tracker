@@ -3,7 +3,6 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
-require('dotenv').config()
 
 const url = process.env.HOST || 'http://localhost:3000';
 console.log(url);
