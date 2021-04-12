@@ -2,6 +2,12 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
 
+const env = dotenv.config().parsed;
+const envKeys = Object.keys(env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    return prev;
+}, {});
+
 module.exports = {
   mode: "development",
   entry: {
@@ -13,9 +19,7 @@ module.exports = {
           template: './src/index.html',
           inject: 'body'
       }),
-      new webpack.DefinePlugin({
-          'process.env': JSON.stringify(dotenv.config().parsed)
-      })
+      new webpack.DefinePlugin(envKeys)
   ],
   output: {
       filename: "[name].bundle.js",
